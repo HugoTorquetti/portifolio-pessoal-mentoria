@@ -54,6 +54,12 @@ Aplicação:
 Health check:
 - `http://localhost:3000/api/health`
 
+Documentação Swagger:
+- `http://localhost:3000/api-docs`
+
+Contrato OpenAPI em JSON:
+- `http://localhost:3000/api-docs.json`
+
 ## Como Executar Testes
 
 Testes unitários, API e smoke:
