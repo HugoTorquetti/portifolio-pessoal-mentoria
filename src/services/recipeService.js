@@ -1,0 +1,193 @@
+const { readDatabase, writeDatabase } = require('../data/db');
+
+function getRecipePreview(recipe) {
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    category: recipe.category,
+    summary: recipe.summary
+  };
+}
+
+function listRecipes({ search, category }) {
+  const database = readDatabase();
+  const normalizedSearch = search ? search.toLowerCase() : '';
+  const normalizedCategory = category ? category.toLowerCase() : '';
+
+  return database.recipes
+    .filter((recipe) => {
+      const matchesSearch = !normalizedSearch
+        || recipe.title.toLowerCase().includes(normalizedSearch)
+        || recipe.summary.toLowerCase().includes(normalizedSearch);
+      const matchesCategory = !normalizedCategory
+        || recipe.category.toLowerCase() === normalizedCategory;
+
+      return matchesSearch && matchesCategory;
+    })
+    .map(getRecipePreview);
+}
+
+function getRecipeDetails(recipeId, user) {
+  const database = readDatabase();
+  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  if (!user) {
+    return {
+      status: 200,
+      body: {
+        recipe: getRecipePreview(recipe),
+        access: 'preview',
+        message: 'Faça login ou cadastro para acessar a receita completa.'
+      }
+    };
+  }
+
+  return {
+    status: 200,
+    body: {
+      recipe,
+      access: 'complete'
+    }
+  };
+}
+
+function favoriteRecipe(recipeId, user) {
+  const database = readDatabase();
+  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+  const persistedUser = database.users.find((item) => item.id === user.id);
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  if (!persistedUser.favorites.includes(recipe.id)) {
+    persistedUser.favorites.push(recipe.id);
+  }
+
+  writeDatabase(database);
+
+  return { status: 200, body: { favorites: persistedUser.favorites } };
+}
+
+function listFavorites(user) {
+  const database = readDatabase();
+  const persistedUser = database.users.find((item) => item.id === user.id);
+  const favorites = database.recipes
+    .filter((recipe) => persistedUser.favorites.includes(recipe.id))
+    .map(getRecipePreview);
+
+  return { status: 200, body: { favorites } };
+}
+
+function addComment(recipeId, user, text) {
+  if (!text) {
+    return { status: 400, body: { message: 'Comentário é obrigatório.' } };
+  }
+
+  const database = readDatabase();
+  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  const comment = {
+    id: Date.now(),
+    userId: user.id,
+    userName: user.name,
+    text
+  };
+
+  recipe.comments.push(comment);
+  writeDatabase(database);
+
+  return { status: 201, body: { comment } };
+}
+
+function addRating(recipeId, user, value) {
+  if (!Number.isInteger(value) || value < 1 || value > 5) {
+    return { status: 400, body: { message: 'Avaliação deve ser um número inteiro entre 1 e 5.' } };
+  }
+
+  const database = readDatabase();
+  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  const rating = {
+    id: Date.now(),
+    userId: user.id,
+    value
+  };
+
+  recipe.ratings.push(rating);
+  writeDatabase(database);
+
+  return { status: 201, body: { rating } };
+}
+
+function createRecipe(user, recipePayload) {
+  if (user.role !== 'admin') {
+    return { status: 403, body: { message: 'Somente admin pode publicar receitas.' } };
+  }
+
+  const requiredFields = ['title', 'category', 'summary', 'successChecklist', 'steps', 'expertTip'];
+  const hasMissingField = requiredFields.some((field) => !recipePayload[field]);
+
+  if (hasMissingField) {
+    return { status: 400, body: { message: 'Todos os campos obrigatórios da receita devem ser informados.' } };
+  }
+
+  const database = readDatabase();
+  const recipe = {
+    id: Date.now(),
+    ...recipePayload,
+    comments: [],
+    ratings: []
+  };
+
+  database.recipes.push(recipe);
+  writeDatabase(database);
+
+  return { status: 201, body: { recipe } };
+}
+
+function updateRecipe(user, recipeId, recipePayload) {
+  if (user.role !== 'admin') {
+    return { status: 403, body: { message: 'Somente admin pode editar receitas.' } };
+  }
+
+  const database = readDatabase();
+  const recipeIndex = database.recipes.findIndex((item) => item.id === Number(recipeId));
+
+  if (recipeIndex === -1) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  database.recipes[recipeIndex] = {
+    ...database.recipes[recipeIndex],
+    ...recipePayload,
+    id: database.recipes[recipeIndex].id
+  };
+
+  writeDatabase(database);
+
+  return { status: 200, body: { recipe: database.recipes[recipeIndex] } };
+}
+
+module.exports = {
+  addComment,
+  addRating,
+  createRecipe,
+  favoriteRecipe,
+  getRecipeDetails,
+  listFavorites,
+  listRecipes,
+  updateRecipe
+};

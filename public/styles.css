@@ -1,0 +1,153 @@
+:root {
+  --cream: #fff8ec;
+  --clay: #b55332;
+  --coffee: #4b2e24;
+  --sage: #6f8f72;
+  --paper: #ffffff;
+  --shadow: 0 24px 60px rgba(75, 46, 36, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--coffee);
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(circle at top left, rgba(181, 83, 50, 0.2), transparent 32rem),
+    linear-gradient(135deg, #fff4df, #f9ead2 45%, #fdfaf2);
+}
+
+.hero {
+  min-height: 62vh;
+  padding: 5rem 8vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: var(--clay);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  line-height: 1;
+}
+
+h1 {
+  max-width: 780px;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.hero p:not(.eyebrow) {
+  max-width: 720px;
+  font-size: 1.35rem;
+  line-height: 1.6;
+}
+
+.hero-actions,
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.button,
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 1.3rem;
+  color: white;
+  background: var(--clay);
+  cursor: pointer;
+  font: 700 1rem Georgia, "Times New Roman", serif;
+  text-decoration: none;
+}
+
+.button-secondary {
+  color: var(--coffee);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+main {
+  padding: 0 8vw 5rem;
+}
+
+.panel {
+  margin: 0 auto 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid rgba(75, 46, 36, 0.12);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 380px);
+  gap: 2rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid rgba(75, 46, 36, 0.2);
+  border-radius: 1rem;
+  padding: 0.9rem 1rem;
+  color: var(--coffee);
+  background: var(--paper);
+  font: inherit;
+}
+
+.filters {
+  margin: 2rem 0;
+}
+
+.filters input {
+  flex: 1 1 260px;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.recipe-card,
+.login-card {
+  padding: 1.4rem;
+  border-radius: 1.4rem;
+  background: var(--paper);
+}
+
+.recipe-card h3 {
+  margin-top: 0;
+}
+
+.login-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.login-card label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+@media (max-width: 760px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}

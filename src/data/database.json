@@ -1,0 +1,85 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin Receitas da Vó",
+      "email": "admin@receitasdavo.com",
+      "password": "admin123",
+      "role": "admin",
+      "favorites": []
+    },
+    {
+      "id": 2,
+      "name": "Guardião da Memória",
+      "email": "usuario@receitasdavo.com",
+      "password": "usuario123",
+      "role": "user",
+      "favorites": []
+    }
+  ],
+  "sessions": [
+    {
+      "token": "token-2-1776957749124",
+      "userId": 2
+    },
+    {
+      "token": "token-2-1776957876490",
+      "userId": 2
+    },
+    {
+      "token": "token-2-1776957932684",
+      "userId": 2
+    }
+  ],
+  "recipes": [
+    {
+      "id": 1,
+      "title": "Bolo de Fubá da Vó Lurdes",
+      "category": "Bolos",
+      "summary": "Receita de fim de tarde, com cheiro de café passado e mesa cheia.",
+      "successChecklist": [
+        "Separe todos os ingredientes antes de começar.",
+        "Use ovos em temperatura ambiente.",
+        "Pré-aqueça o forno a 180 graus."
+      ],
+      "steps": [
+        "Misture os ingredientes secos.",
+        "Acrescente ovos, leite e óleo aos poucos.",
+        "Leve ao forno até dourar."
+      ],
+      "expertTip": "O pulo do gato é untar a forma com manteiga e fubá para criar uma casquinha delicada.",
+      "comments": [],
+      "ratings": [
+        {
+          "id": 1776957749138,
+          "userId": 2,
+          "value": 5
+        },
+        {
+          "id": 1776957932698,
+          "userId": 2,
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Sopa de Legumes de Domingo",
+      "category": "Sopas",
+      "summary": "Uma receita simples para aquecer a casa e juntar a família.",
+      "successChecklist": [
+        "Corte os legumes em tamanhos parecidos.",
+        "Use caldo caseiro se possível.",
+        "Cozinhe em fogo baixo para concentrar sabor."
+      ],
+      "steps": [
+        "Refogue alho e cebola.",
+        "Adicione os legumes e o caldo.",
+        "Cozinhe até tudo ficar macio."
+      ],
+      "expertTip": "Finalize com cheiro-verde apenas no fim para manter aroma e frescor.",
+      "comments": [],
+      "ratings": []
+    }
+  ]
+}

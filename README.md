@@ -29,4 +29,57 @@ Este repositório concentrará todo o ciclo de desenvolvimento do projeto:
 - [docs/wiki/Home.md](/C:/projetos/portifolio-pessoal-mentoria/docs/wiki/Home.md)
 
 ## Status Atual
-O projeto está na fase de planejamento funcional e de qualidade.
+O projeto possui planejamento funcional, documentação de qualidade, estrutura web inicial, API base e esteira inicial de testes.
+
+## Como Executar Localmente
+
+Pré-requisito:
+- Node.js instalado
+
+Instalar dependências:
+
+```bash
+npm install
+```
+
+Subir aplicação:
+
+```bash
+npm start
+```
+
+Aplicação:
+- `http://localhost:3000`
+
+Health check:
+- `http://localhost:3000/api/health`
+
+## Como Executar Testes
+
+Testes unitários, API e smoke:
+
+```bash
+npm test
+```
+
+Testes de API:
+
+```bash
+npm run test:api
+```
+
+Testes E2E com Cypress:
+
+```bash
+npm run test:e2e
+```
+
+## Credenciais Iniciais
+
+Admin:
+- E-mail: `admin@receitasdavo.com`
+- Senha: `admin123`
+
+Usuário:
+- E-mail: `usuario@receitasdavo.com`
+- Senha: `usuario123`
