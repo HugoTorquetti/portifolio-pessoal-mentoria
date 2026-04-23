@@ -1,0 +1,29 @@
+name: Task
+description: Registrar uma tarefa técnica ou de QA
+title: "[TASK] "
+labels:
+  - task
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objetivo
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Critério de pronto
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Frontend
+        - Backend
+        - QA
+        - DevOps
+    validations:
+      required: true

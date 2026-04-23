@@ -1,0 +1,60 @@
+name: User Story
+description: Registrar uma user story do produto
+title: "[US] "
+labels:
+  - user-story
+body:
+  - type: input
+    id: persona
+    attributes:
+      label: Persona ou perfil
+      placeholder: Ex. Visitante, Usuário, Admin
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      description: Use o formato Como, quero, para
+      placeholder: Como..., quero..., para...
+    validations:
+      required: true
+  - type: textarea
+    id: business-rules
+    attributes:
+      label: Regras de negócio
+      placeholder: Liste as regras relacionadas a esta história
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite em Gherkin
+      description: Registre ao menos um cenário
+      placeholder: |
+        Cenário: ...
+        Dado que ...
+        Quando ...
+        Então ...
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options:
+        - Alta
+        - Média
+        - Baixa
+    validations:
+      required: true
+  - type: dropdown
+    id: qa-criticality
+    attributes:
+      label: Criticidade QA
+      options:
+        - Alta
+        - Média
+        - Baixa
+    validations:
+      required: true

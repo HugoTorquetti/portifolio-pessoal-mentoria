@@ -1,0 +1,73 @@
+name: Bug Report
+description: Registrar um defeito encontrado no sistema
+title: "[BUG] "
+labels:
+  - bug
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Título resumido
+      description: Descreva o defeito em uma frase objetiva
+      placeholder: Ex. Visitante consegue acessar receita completa
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severidade
+      options:
+        - Crítica
+        - Alta
+        - Média
+        - Baixa
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options:
+        - Alta
+        - Média
+        - Baixa
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Ambiente
+      placeholder: Ex. local, homologação, produção acadêmica
+    validations:
+      required: true
+  - type: textarea
+    id: precondition
+    attributes:
+      label: Pré-condição
+      placeholder: Informe o estado inicial necessário
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      placeholder: Liste os passos em ordem
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado obtido
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências
+      description: Links, prints ou observações relevantes
