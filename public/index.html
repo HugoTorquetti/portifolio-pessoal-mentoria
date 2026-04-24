@@ -8,21 +8,120 @@
   </head>
   <body>
     <header class="hero">
-      <p class="eyebrow">Guardiões da Memória</p>
-      <h1>Receitas da Vó</h1>
-      <p>
-        Preserve histórias de família através de receitas afetivas, com passo a
-        passo claro para repetir o sabor e o sentimento de casa.
-      </p>
-      <div class="hero-actions">
-        <a href="#catalogo" class="button">Ver receitas</a>
-        <a href="#login" class="button button-secondary">Entrar</a>
+      <div class="hero-copy">
+        <p class="eyebrow">Guardiões da Memória</p>
+        <h1>Receitas da Vó</h1>
+        <p class="hero-text">
+          Um lugar para preservar memórias familiares através da comida,
+          ensinando cada receita com clareza para repetir o sabor e o
+          sentimento de casa.
+        </p>
+        <div class="hero-actions">
+          <a href="#acesso" class="button">Quero me cadastrar</a>
+          <a href="#login" class="button button-secondary">Já tenho conta</a>
+        </div>
       </div>
+
+      <aside class="hero-aside">
+        <p class="aside-label">Promessa do produto</p>
+        <h2>Receitas que guardam histórias, não só ingredientes.</h2>
+        <p>
+          Cada prato reúne contexto, checklist, método e o pulo do gato para
+          transformar lembrança em prática na cozinha.
+        </p>
+      </aside>
     </header>
 
     <main>
+      <section class="panel manifesto">
+        <div>
+          <p class="section-tag">Por que existimos</p>
+          <h2>Comida também é herança.</h2>
+        </div>
+        <p>
+          O Receitas da Vó nasceu para ajudar famílias a não perderem aquilo
+          que costumava estar só na memória de alguém: a textura certa do bolo,
+          o cheiro da sopa de domingo, o segredo que fazia toda a diferença.
+        </p>
+      </section>
+
+      <section class="panel pillars">
+        <article class="pillar-card">
+          <p class="pill-number">01</p>
+          <h3>Memória afetiva</h3>
+          <p>
+            Cada receita parte do que ela representa para a família, e não só
+            da lista de ingredientes.
+          </p>
+        </article>
+
+        <article class="pillar-card">
+          <p class="pill-number">02</p>
+          <h3>Passo a passo claro</h3>
+          <p>
+            O preparo é dividido em etapas lógicas para qualquer pessoa
+            conseguir cozinhar com mais confiança.
+          </p>
+        </article>
+
+        <article class="pillar-card">
+          <p class="pill-number">03</p>
+          <h3>Segredo de família</h3>
+          <p>
+            O “pulo do gato” aparece como conhecimento técnico herdado, aquele
+            detalhe que muda tudo no resultado.
+          </p>
+        </article>
+      </section>
+
+      <section id="acesso" class="panel access-hub">
+        <div class="access-card signup-card">
+          <p class="section-tag">Primeiro passo</p>
+          <h2>Crie sua conta</h2>
+          <p>
+            Faça parte dos Guardiões da Memória para desbloquear receitas
+            completas, favoritos, comentários e avaliações.
+          </p>
+          <a href="#login" class="button">Começar minha jornada</a>
+        </div>
+
+        <div id="login" class="access-card login-shell">
+          <div>
+            <p class="section-tag">Já faz parte?</p>
+            <h2>Entre para continuar</h2>
+            <p>
+              Use a área de login para acessar a versão completa das receitas
+              já publicadas.
+            </p>
+          </div>
+
+          <form id="login-form" class="login-card">
+            <label>
+              E-mail
+              <input id="email" type="email" value="usuario@receitasdavo.com" />
+            </label>
+            <label>
+              Senha
+              <input id="password" type="password" value="usuario123" />
+            </label>
+            <button type="submit">Entrar</button>
+            <p id="login-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
       <section id="catalogo" class="panel">
-        <h2>Catálogo afetivo</h2>
+        <div class="catalog-header">
+          <div>
+            <p class="section-tag">Prévia pública</p>
+            <h2>Catálogo afetivo</h2>
+          </div>
+          <p>
+            Visitantes já podem conhecer o clima das receitas. O conteúdo
+            completo é liberado após autenticação.
+          </p>
+        </div>
+
         <form id="filters" class="filters">
           <input id="search" type="search" placeholder="Buscar por lembrança ou receita" />
           <select id="category">
@@ -32,29 +131,8 @@
           </select>
           <button type="submit">Buscar</button>
         </form>
-        <div id="recipes" class="recipe-grid" aria-live="polite"></div>
-      </section>
 
-      <section id="login" class="panel split">
-        <div>
-          <h2>Acesse a receita completa</h2>
-          <p>
-            Visitantes visualizam a prévia. Guardiões autenticados acessam o
-            checklist, o método completo e o pulo do gato.
-          </p>
-        </div>
-        <form id="login-form" class="login-card">
-          <label>
-            E-mail
-            <input id="email" type="email" value="usuario@receitasdavo.com" />
-          </label>
-          <label>
-            Senha
-            <input id="password" type="password" value="usuario123" />
-          </label>
-          <button type="submit">Entrar como usuário</button>
-          <p id="login-message"></p>
-        </form>
+        <div id="recipes" class="recipe-grid" aria-live="polite"></div>
       </section>
     </main>
 

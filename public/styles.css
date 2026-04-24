@@ -4,6 +4,8 @@
   --coffee: #4b2e24;
   --sage: #6f8f72;
   --paper: #ffffff;
+  --sand: #f2dfbe;
+  --line: rgba(75, 46, 36, 0.12);
   --shadow: 0 24px 60px rgba(75, 46, 36, 0.16);
 }
 
@@ -11,24 +13,45 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   color: var(--coffee);
   font-family: Georgia, "Times New Roman", serif;
   background:
-    radial-gradient(circle at top left, rgba(181, 83, 50, 0.2), transparent 32rem),
+    radial-gradient(circle at top left, rgba(181, 83, 50, 0.18), transparent 28rem),
+    radial-gradient(circle at bottom right, rgba(111, 143, 114, 0.14), transparent 24rem),
     linear-gradient(135deg, #fff4df, #f9ead2 45%, #fdfaf2);
 }
 
-.hero {
-  min-height: 62vh;
-  padding: 5rem 8vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.hero,
+main {
+  padding-left: 8vw;
+  padding-right: 8vw;
 }
 
-.eyebrow {
+.hero {
+  min-height: 78vh;
+  padding-top: 4.5rem;
+  padding-bottom: 3rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 420px);
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero-copy,
+.hero-aside,
+.panel {
+  position: relative;
+}
+
+.eyebrow,
+.section-tag,
+.aside-label {
   margin: 0 0 1rem;
   color: var(--clay);
   font-weight: 700;
@@ -37,24 +60,35 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   margin: 0;
-  line-height: 1;
+  line-height: 0.98;
 }
 
 h1 {
-  max-width: 780px;
-  font-size: clamp(3.5rem, 12vw, 8rem);
+  max-width: 760px;
+  font-size: clamp(3.8rem, 11vw, 8.2rem);
 }
 
 h2 {
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(2rem, 4vw, 4rem);
 }
 
-.hero p:not(.eyebrow) {
-  max-width: 720px;
-  font-size: 1.35rem;
-  line-height: 1.6;
+h3 {
+  font-size: 1.55rem;
+}
+
+.hero-text,
+.manifesto p,
+.hero-aside p,
+.catalog-header p {
+  font-size: 1.18rem;
+  line-height: 1.7;
+}
+
+.hero-text {
+  max-width: 760px;
 }
 
 .hero-actions,
@@ -68,36 +102,117 @@ h2 {
 button {
   border: 0;
   border-radius: 999px;
-  padding: 0.9rem 1.3rem;
+  padding: 0.95rem 1.35rem;
   color: white;
   background: var(--clay);
   cursor: pointer;
   font: 700 1rem Georgia, "Times New Roman", serif;
   text-decoration: none;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.button:hover,
+button:hover {
+  transform: translateY(-1px);
 }
 
 .button-secondary {
   color: var(--coffee);
   background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(75, 46, 36, 0.14);
+}
+
+.hero-aside,
+.panel,
+.pillar-card,
+.recipe-card,
+.login-card,
+.access-card {
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow);
+}
+
+.hero-aside {
+  padding: 2rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 244, 223, 0.92)),
+    var(--paper);
 }
 
 main {
-  padding: 0 8vw 5rem;
+  padding-bottom: 5rem;
 }
 
 .panel {
   margin: 0 auto 2rem;
   padding: clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid rgba(75, 46, 36, 0.12);
-  border-radius: 2rem;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: var(--shadow);
 }
 
-.split {
+.manifesto {
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 380px);
+  grid-template-columns: minmax(240px, 420px) 1fr;
   gap: 2rem;
+  align-items: start;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pillar-card {
+  padding: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(242, 223, 190, 0.56)),
+    var(--paper);
+}
+
+.pill-number {
+  margin: 0 0 0.75rem;
+  color: var(--sage);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.access-hub {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 1.5rem;
+}
+
+.access-card {
+  padding: 1.8rem;
+}
+
+.signup-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at top right, rgba(111, 143, 114, 0.18), transparent 16rem),
+    rgba(255, 255, 255, 0.84);
+}
+
+.login-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.login-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.4rem;
+  background: var(--paper);
+  border-radius: 1.4rem;
+}
+
+.login-card label {
+  display: grid;
+  gap: 0.45rem;
 }
 
 input,
@@ -109,6 +224,13 @@ select {
   color: var(--coffee);
   background: var(--paper);
   font: inherit;
+}
+
+.catalog-header {
+  display: grid;
+  grid-template-columns: minmax(240px, 360px) 1fr;
+  gap: 2rem;
+  align-items: end;
 }
 
 .filters {
@@ -125,29 +247,39 @@ select {
   gap: 1rem;
 }
 
-.recipe-card,
-.login-card {
+.recipe-card {
   padding: 1.4rem;
-  border-radius: 1.4rem;
-  background: var(--paper);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .recipe-card h3 {
-  margin-top: 0;
+  margin-bottom: 0.75rem;
 }
 
-.login-card {
-  display: grid;
-  gap: 1rem;
+#login-message {
+  margin: 0;
+  min-height: 1.25rem;
 }
 
-.login-card label {
-  display: grid;
-  gap: 0.4rem;
-}
-
-@media (max-width: 760px) {
-  .split {
+@media (max-width: 960px) {
+  .hero,
+  .manifesto,
+  .access-hub,
+  .catalog-header,
+  .pillars {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero,
+  main {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 2rem;
   }
 }
