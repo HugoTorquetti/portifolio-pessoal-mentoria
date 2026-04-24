@@ -24,3 +24,5 @@ Garantir a qualidade funcional e técnica do sistema por meio de testes manuais 
 - CRUD exclusivo de admin
 - soft delete de receitas
 - persistência de interações
+- edição e exclusão de comentários por autor ou admin
+- remoção de favoritos pelo próprio usuário

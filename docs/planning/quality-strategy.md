@@ -37,6 +37,7 @@ Foco:
 - autenticação e autorização
 - regras por perfil
 - CRUD de receitas com soft delete
+- gestão de interações com permissão por autor e admin
 
 ### Testes E2E
 Ferramenta:
@@ -71,6 +72,7 @@ Executada antes de marcos importantes e entrega final.
 - CRUD administrativo por admin
 - soft delete de receitas
 - persistência de favoritos
+- edição e exclusão de comentários com autorização correta
 
 ### Média Prioridade
 - busca

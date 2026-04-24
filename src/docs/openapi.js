@@ -2,7 +2,7 @@ const openApiDocument = {
   openapi: '3.0.3',
   info: {
     title: 'Receitas da Vó API',
-    version: '0.2.0',
+    version: '0.3.0',
     description: 'API do sistema Receitas da Vó para autenticação, consulta de receitas, interações de usuário e CRUD de receitas com regras administrativas.'
   },
   servers: [
@@ -236,6 +236,24 @@ const openApiDocument = {
           401: { $ref: '#/components/responses/Unauthorized' },
           404: { $ref: '#/components/responses/NotFound' }
         }
+      },
+      delete: {
+        tags: ['Interações'],
+        summary: 'Remove uma receita dos favoritos do próprio usuário autenticado',
+        security: [{ bearerAuth: [] }],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
+        responses: {
+          200: {
+            description: 'Receita removida dos favoritos com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/FavoritesIdsResponse' }
+              }
+            }
+          },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
       }
     },
     '/api/me/favorites': {
@@ -285,6 +303,63 @@ const openApiDocument = {
         }
       }
     },
+    '/api/recipes/{id}/comments/{commentId}': {
+      put: {
+        tags: ['Interações'],
+        summary: 'Edita um comentário',
+        description: 'Permitido apenas para o autor do comentário ou para admin.',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          { $ref: '#/components/parameters/RecipeId' },
+          { $ref: '#/components/parameters/CommentId' }
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/CommentRequest' }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Comentário editado com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/CommentResponse' }
+              }
+            }
+          },
+          400: { $ref: '#/components/responses/BadRequest' },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
+      },
+      delete: {
+        tags: ['Interações'],
+        summary: 'Exclui um comentário',
+        description: 'Permitido apenas para o autor do comentário ou para admin.',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          { $ref: '#/components/parameters/RecipeId' },
+          { $ref: '#/components/parameters/CommentId' }
+        ],
+        responses: {
+          200: {
+            description: 'Comentário removido com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/DeleteCommentResponse' }
+              }
+            }
+          },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
+      }
+    },
     '/api/recipes/{id}/ratings': {
       post: {
         tags: ['Interações'],
@@ -330,6 +405,13 @@ const openApiDocument = {
         required: true,
         schema: { type: 'integer', example: 1 },
         description: 'Identificador da receita'
+      },
+      CommentId: {
+        name: 'commentId',
+        in: 'path',
+        required: true,
+        schema: { type: 'integer', example: 1710000000000 },
+        description: 'Identificador do comentário'
       }
     },
     responses: {
@@ -574,6 +656,12 @@ const openApiDocument = {
         type: 'object',
         properties: {
           comment: { $ref: '#/components/schemas/Comment' }
+        }
+      },
+      DeleteCommentResponse: {
+        type: 'object',
+        properties: {
+          message: { type: 'string', example: 'Comentário removido com sucesso.' }
         }
       },
       RatingRequest: {

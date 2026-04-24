@@ -12,7 +12,8 @@
 
 ## Regras De Negócio
 - Somente o `admin` pode criar, publicar, editar e excluir receitas
-- Usuário logado pode consultar receitas completas, favoritar, comentar e avaliar
+- Usuário logado pode consultar receitas completas, favoritar, remover favoritos, comentar, editar o próprio comentário, excluir o próprio comentário e avaliar
+- `Admin` pode editar e excluir comentários de qualquer usuário
 - Visitante vê apenas uma prévia da receita e precisa se cadastrar/logar para acessar o conteúdo completo
 - A exclusão de receita deve ser realizada com `soft delete`
 - Toda receita deve seguir a estrutura:
@@ -37,7 +38,7 @@ Objetivo: permitir busca, filtro e navegação do catálogo.
 Objetivo: exibir a receita com o template completo definido pelo negócio.
 
 ### EP05 - Interações do Usuário
-Objetivo: permitir favoritar, comentar e avaliar receitas.
+Objetivo: permitir favoritar, remover favoritos, comentar, editar comentários, excluir comentários e avaliar receitas.
 
 ### EP06 - Gestão Administrativa de Conteúdo
 Objetivo: garantir que apenas o admin realize o CRUD administrativo das receitas.
@@ -161,6 +162,58 @@ Dado que estou autenticado
 E existe uma receita publicada
 Quando envio um comentário válido
 Então o comentário deve ser salvo e associado à receita
+```
+
+### US16 - Remover receita dos favoritos
+Como usuário, quero remover receitas dos favoritos para manter minha lista atualizada.
+
+Critérios de aceite:
+
+```gherkin
+Cenário: Remover receita dos favoritos
+Dado que estou autenticado
+E possuo uma receita favoritada
+Quando solicito a remoção da receita dos favoritos
+Então a receita não deve mais aparecer na minha lista de favoritos
+```
+
+### US17 - Editar comentário
+Como usuário, quero editar meu comentário para corrigir ou melhorar o que escrevi.
+
+Critérios de aceite:
+
+```gherkin
+Cenário: Autor edita o próprio comentário
+Dado que estou autenticado
+E existe um comentário meu em uma receita
+Quando altero o texto do comentário
+Então o comentário deve ser atualizado com sucesso
+```
+
+### US18 - Excluir comentário
+Como usuário, quero excluir meu comentário para remover um conteúdo que não desejo mais manter publicado.
+
+Critérios de aceite:
+
+```gherkin
+Cenário: Autor exclui o próprio comentário
+Dado que estou autenticado
+E existe um comentário meu em uma receita
+Quando solicito a exclusão do comentário
+Então o comentário deve ser removido com sucesso
+```
+
+### US19 - Admin gerencia comentários de terceiros
+Como admin, quero editar ou excluir comentários de qualquer usuário para moderar o conteúdo da plataforma.
+
+Critérios de aceite:
+
+```gherkin
+Cenário: Admin edita ou exclui comentário de outro usuário
+Dado que estou autenticado como admin
+E existe um comentário de outro usuário em uma receita
+Quando edito ou excluo o comentário
+Então a ação deve ser concluída com sucesso
 ```
 
 ### US10 - Avaliar receita

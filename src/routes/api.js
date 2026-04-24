@@ -5,11 +5,14 @@ const {
   addComment,
   addRating,
   createRecipe,
+  deleteComment,
   favoriteRecipe,
   getRecipeDetails,
   listFavorites,
   listRecipes,
+  removeFavoriteRecipe,
   softDeleteRecipe,
+  updateComment,
   updateRecipe
 } = require('../services/recipeService');
 
@@ -56,12 +59,27 @@ function createApiRouter() {
     return sendServiceResponse(res, favoriteRecipe(req.params.id, req.user));
   });
 
+  router.delete('/recipes/:id/favorite', requireAuth, (req, res) => {
+    return sendServiceResponse(res, removeFavoriteRecipe(req.params.id, req.user));
+  });
+
   router.get('/me/favorites', requireAuth, (req, res) => {
     return sendServiceResponse(res, listFavorites(req.user));
   });
 
   router.post('/recipes/:id/comments', requireAuth, (req, res) => {
     return sendServiceResponse(res, addComment(req.params.id, req.user, req.body.text));
+  });
+
+  router.put('/recipes/:id/comments/:commentId', requireAuth, (req, res) => {
+    return sendServiceResponse(
+      res,
+      updateComment(req.params.id, req.params.commentId, req.user, req.body.text)
+    );
+  });
+
+  router.delete('/recipes/:id/comments/:commentId', requireAuth, (req, res) => {
+    return sendServiceResponse(res, deleteComment(req.params.id, req.params.commentId, req.user));
   });
 
   router.post('/recipes/:id/ratings', requireAuth, (req, res) => {

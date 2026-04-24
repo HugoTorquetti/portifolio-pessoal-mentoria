@@ -17,12 +17,7 @@
       "favorites": []
     }
   ],
-  "sessions": [
-    {
-      "token": "token-2-1776990627487",
-      "userId": 2
-    }
-  ],
+  "sessions": [],
   "recipes": [
     {
       "id": 1,
@@ -42,13 +37,7 @@
       "expertTip": "O pulo do gato é untar a forma com manteiga e fubá para criar uma casquinha delicada.",
       "deletedAt": null,
       "comments": [],
-      "ratings": [
-        {
-          "id": 1776990627500,
-          "userId": 2,
-          "value": 5
-        }
-      ]
+      "ratings": []
     },
     {
       "id": 2,

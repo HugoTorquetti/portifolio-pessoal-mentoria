@@ -13,3 +13,7 @@
 | US11 | CT09 | API / E2E | A definir | A definir |
 | US13 | CT10 | API | A definir | A definir |
 | US15 | CT11 | API | A definir | A definir |
+| US16 | CT12 | API | A definir | A definir |
+| US17 | CT13 | API | A definir | A definir |
+| US18 | CT14 | API | A definir | A definir |
+| US19 | CT15 / CT16 / CT17 / CT18 | API | A definir | A definir |

@@ -8,6 +8,14 @@ function findActiveRecipeById(database, recipeId) {
   return database.recipes.find((item) => item.id === Number(recipeId) && isActiveRecipe(item));
 }
 
+function findComment(recipe, commentId) {
+  return recipe.comments.find((comment) => comment.id === Number(commentId));
+}
+
+function canManageComment(user, comment) {
+  return user.role === 'admin' || comment.userId === user.id;
+}
+
 function getRecipePreview(recipe) {
   return {
     id: recipe.id,
@@ -85,6 +93,21 @@ function favoriteRecipe(recipeId, user) {
   return { status: 200, body: { favorites: persistedUser.favorites } };
 }
 
+function removeFavoriteRecipe(recipeId, user) {
+  const database = readDatabase();
+  const recipe = findActiveRecipeById(database, recipeId);
+  const persistedUser = database.users.find((item) => item.id === user.id);
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  persistedUser.favorites = persistedUser.favorites.filter((favoriteId) => favoriteId !== recipe.id);
+  writeDatabase(database);
+
+  return { status: 200, body: { favorites: persistedUser.favorites } };
+}
+
 function listFavorites(user) {
   const database = readDatabase();
   const persistedUser = database.users.find((item) => item.id === user.id);
@@ -118,6 +141,58 @@ function addComment(recipeId, user, text) {
   writeDatabase(database);
 
   return { status: 201, body: { comment } };
+}
+
+function updateComment(recipeId, commentId, user, text) {
+  if (!text) {
+    return { status: 400, body: { message: 'Comentário é obrigatório.' } };
+  }
+
+  const database = readDatabase();
+  const recipe = findActiveRecipeById(database, recipeId);
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  const comment = findComment(recipe, commentId);
+
+  if (!comment) {
+    return { status: 404, body: { message: 'Comentário não encontrado.' } };
+  }
+
+  if (!canManageComment(user, comment)) {
+    return { status: 403, body: { message: 'Somente o autor do comentário ou admin pode editar comentários.' } };
+  }
+
+  comment.text = text;
+  writeDatabase(database);
+
+  return { status: 200, body: { comment } };
+}
+
+function deleteComment(recipeId, commentId, user) {
+  const database = readDatabase();
+  const recipe = findActiveRecipeById(database, recipeId);
+
+  if (!recipe) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  const comment = findComment(recipe, commentId);
+
+  if (!comment) {
+    return { status: 404, body: { message: 'Comentário não encontrado.' } };
+  }
+
+  if (!canManageComment(user, comment)) {
+    return { status: 403, body: { message: 'Somente o autor do comentário ou admin pode excluir comentários.' } };
+  }
+
+  recipe.comments = recipe.comments.filter((item) => item.id !== Number(commentId));
+  writeDatabase(database);
+
+  return { status: 200, body: { message: 'Comentário removido com sucesso.' } };
 }
 
 function addRating(recipeId, user, value) {
@@ -231,11 +306,14 @@ module.exports = {
   addComment,
   addRating,
   createRecipe,
+  deleteComment,
   favoriteRecipe,
   getRecipeDetails,
   isActiveRecipe,
   listFavorites,
   listRecipes,
+  removeFavoriteRecipe,
   softDeleteRecipe,
+  updateComment,
   updateRecipe
 };

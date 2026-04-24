@@ -56,3 +56,38 @@
 - Pré-condição: admin autenticado e receita existente
 - Passos: solicitar exclusão
 - Resultado esperado: receita marcada como excluída logicamente e oculta do catálogo
+
+### CT12 - Usuário remove receita dos favoritos
+- Pré-condição: usuário autenticado e receita favoritada
+- Passos: solicitar remoção do favorito
+- Resultado esperado: receita removida da lista de favoritos
+
+### CT13 - Autor edita o próprio comentário
+- Pré-condição: usuário autenticado e comentário próprio existente
+- Passos: alterar texto do comentário
+- Resultado esperado: comentário atualizado
+
+### CT14 - Autor exclui o próprio comentário
+- Pré-condição: usuário autenticado e comentário próprio existente
+- Passos: solicitar exclusão do comentário
+- Resultado esperado: comentário removido
+
+### CT15 - Admin edita comentário de outro usuário
+- Pré-condição: admin autenticado e comentário de terceiro existente
+- Passos: alterar texto do comentário
+- Resultado esperado: comentário atualizado com sucesso
+
+### CT16 - Admin exclui comentário de outro usuário
+- Pré-condição: admin autenticado e comentário de terceiro existente
+- Passos: solicitar exclusão do comentário
+- Resultado esperado: comentário removido com sucesso
+
+### CT17 - Usuário comum é bloqueado ao editar comentário de outro usuário
+- Pré-condição: usuário autenticado e comentário de terceiro existente
+- Passos: tentar editar o comentário
+- Resultado esperado: acesso negado
+
+### CT18 - Usuário comum é bloqueado ao excluir comentário de outro usuário
+- Pré-condição: usuário autenticado e comentário de terceiro existente
+- Passos: tentar excluir o comentário
+- Resultado esperado: acesso negado
