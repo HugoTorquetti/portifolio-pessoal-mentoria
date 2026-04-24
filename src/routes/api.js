@@ -9,6 +9,7 @@ const {
   getRecipeDetails,
   listFavorites,
   listRecipes,
+  softDeleteRecipe,
   updateRecipe
 } = require('../services/recipeService');
 
@@ -39,6 +40,18 @@ function createApiRouter() {
     return sendServiceResponse(res, getRecipeDetails(req.params.id, req.user));
   });
 
+  router.post('/recipes', requireAuth, (req, res) => {
+    return sendServiceResponse(res, createRecipe(req.user, req.body));
+  });
+
+  router.put('/recipes/:id', requireAuth, (req, res) => {
+    return sendServiceResponse(res, updateRecipe(req.user, req.params.id, req.body));
+  });
+
+  router.delete('/recipes/:id', requireAuth, (req, res) => {
+    return sendServiceResponse(res, softDeleteRecipe(req.user, req.params.id));
+  });
+
   router.post('/recipes/:id/favorite', requireAuth, (req, res) => {
     return sendServiceResponse(res, favoriteRecipe(req.params.id, req.user));
   });
@@ -53,14 +66,6 @@ function createApiRouter() {
 
   router.post('/recipes/:id/ratings', requireAuth, (req, res) => {
     return sendServiceResponse(res, addRating(req.params.id, req.user, req.body.value));
-  });
-
-  router.post('/admin/recipes', requireAuth, (req, res) => {
-    return sendServiceResponse(res, createRecipe(req.user, req.body));
-  });
-
-  router.put('/admin/recipes/:id', requireAuth, (req, res) => {
-    return sendServiceResponse(res, updateRecipe(req.user, req.params.id, req.body));
   });
 
   return router;

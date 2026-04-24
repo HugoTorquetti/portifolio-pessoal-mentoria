@@ -21,5 +21,6 @@ Garantir a qualidade funcional e técnica do sistema por meio de testes manuais 
 - autenticação
 - autorização
 - bloqueio de visitante
-- publicação exclusiva de admin
+- CRUD exclusivo de admin
+- soft delete de receitas
 - persistência de interações

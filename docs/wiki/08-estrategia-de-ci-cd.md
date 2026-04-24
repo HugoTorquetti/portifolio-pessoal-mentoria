@@ -10,6 +10,7 @@ Garantir que o repositório utilize `GitHub Actions` como porta de entrada de qu
 - executar testes de integração
 - executar testes de API
 - executar smoke E2E
+- validar endpoints documentados no Swagger/OpenAPI
 - publicar artefatos de teste
 
 ## Regras

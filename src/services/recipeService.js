@@ -1,5 +1,13 @@
 const { readDatabase, writeDatabase } = require('../data/db');
 
+function isActiveRecipe(recipe) {
+  return !recipe.deletedAt;
+}
+
+function findActiveRecipeById(database, recipeId) {
+  return database.recipes.find((item) => item.id === Number(recipeId) && isActiveRecipe(item));
+}
+
 function getRecipePreview(recipe) {
   return {
     id: recipe.id,
@@ -16,6 +24,10 @@ function listRecipes({ search, category }) {
 
   return database.recipes
     .filter((recipe) => {
+      if (!isActiveRecipe(recipe)) {
+        return false;
+      }
+
       const matchesSearch = !normalizedSearch
         || recipe.title.toLowerCase().includes(normalizedSearch)
         || recipe.summary.toLowerCase().includes(normalizedSearch);
@@ -29,7 +41,7 @@ function listRecipes({ search, category }) {
 
 function getRecipeDetails(recipeId, user) {
   const database = readDatabase();
-  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+  const recipe = findActiveRecipeById(database, recipeId);
 
   if (!recipe) {
     return { status: 404, body: { message: 'Receita não encontrada.' } };
@@ -57,7 +69,7 @@ function getRecipeDetails(recipeId, user) {
 
 function favoriteRecipe(recipeId, user) {
   const database = readDatabase();
-  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+  const recipe = findActiveRecipeById(database, recipeId);
   const persistedUser = database.users.find((item) => item.id === user.id);
 
   if (!recipe) {
@@ -77,7 +89,7 @@ function listFavorites(user) {
   const database = readDatabase();
   const persistedUser = database.users.find((item) => item.id === user.id);
   const favorites = database.recipes
-    .filter((recipe) => persistedUser.favorites.includes(recipe.id))
+    .filter((recipe) => persistedUser.favorites.includes(recipe.id) && isActiveRecipe(recipe))
     .map(getRecipePreview);
 
   return { status: 200, body: { favorites } };
@@ -89,7 +101,7 @@ function addComment(recipeId, user, text) {
   }
 
   const database = readDatabase();
-  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+  const recipe = findActiveRecipeById(database, recipeId);
 
   if (!recipe) {
     return { status: 404, body: { message: 'Receita não encontrada.' } };
@@ -114,7 +126,7 @@ function addRating(recipeId, user, value) {
   }
 
   const database = readDatabase();
-  const recipe = database.recipes.find((item) => item.id === Number(recipeId));
+  const recipe = findActiveRecipeById(database, recipeId);
 
   if (!recipe) {
     return { status: 404, body: { message: 'Receita não encontrada.' } };
@@ -148,6 +160,7 @@ function createRecipe(user, recipePayload) {
   const recipe = {
     id: Date.now(),
     ...recipePayload,
+    deletedAt: null,
     comments: [],
     ratings: []
   };
@@ -164,7 +177,9 @@ function updateRecipe(user, recipeId, recipePayload) {
   }
 
   const database = readDatabase();
-  const recipeIndex = database.recipes.findIndex((item) => item.id === Number(recipeId));
+  const recipeIndex = database.recipes.findIndex(
+    (item) => item.id === Number(recipeId) && isActiveRecipe(item)
+  );
 
   if (recipeIndex === -1) {
     return { status: 404, body: { message: 'Receita não encontrada.' } };
@@ -173,12 +188,43 @@ function updateRecipe(user, recipeId, recipePayload) {
   database.recipes[recipeIndex] = {
     ...database.recipes[recipeIndex],
     ...recipePayload,
-    id: database.recipes[recipeIndex].id
+    id: database.recipes[recipeIndex].id,
+    deletedAt: database.recipes[recipeIndex].deletedAt
   };
 
   writeDatabase(database);
 
   return { status: 200, body: { recipe: database.recipes[recipeIndex] } };
+}
+
+function softDeleteRecipe(user, recipeId) {
+  if (user.role !== 'admin') {
+    return { status: 403, body: { message: 'Somente admin pode excluir receitas.' } };
+  }
+
+  const database = readDatabase();
+  const recipeIndex = database.recipes.findIndex(
+    (item) => item.id === Number(recipeId) && isActiveRecipe(item)
+  );
+
+  if (recipeIndex === -1) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  database.recipes[recipeIndex] = {
+    ...database.recipes[recipeIndex],
+    deletedAt: new Date().toISOString()
+  };
+
+  writeDatabase(database);
+
+  return {
+    status: 200,
+    body: {
+      message: 'Receita removida com soft delete.',
+      recipe: database.recipes[recipeIndex]
+    }
+  };
 }
 
 module.exports = {
@@ -187,7 +233,9 @@ module.exports = {
   createRecipe,
   favoriteRecipe,
   getRecipeDetails,
+  isActiveRecipe,
   listFavorites,
   listRecipes,
+  softDeleteRecipe,
   updateRecipe
 };

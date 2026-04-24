@@ -2,8 +2,8 @@ const openApiDocument = {
   openapi: '3.0.3',
   info: {
     title: 'Receitas da Vó API',
-    version: '0.1.0',
-    description: 'API do sistema Receitas da Vó para autenticação, consulta de receitas, interações de usuário e administração de conteúdo.'
+    version: '0.2.0',
+    description: 'API do sistema Receitas da Vó para autenticação, consulta de receitas, interações de usuário e CRUD de receitas com regras administrativas.'
   },
   servers: [
     {
@@ -14,9 +14,8 @@ const openApiDocument = {
   tags: [
     { name: 'Health', description: 'Verificação de disponibilidade da API' },
     { name: 'Autenticação', description: 'Cadastro e login de usuários' },
-    { name: 'Receitas', description: 'Consulta, busca e detalhes de receitas' },
-    { name: 'Interações', description: 'Favoritos, comentários e avaliações' },
-    { name: 'Admin', description: 'Publicação e edição de receitas por administradores' }
+    { name: 'Receitas', description: 'Consulta e CRUD de receitas' },
+    { name: 'Interações', description: 'Favoritos, comentários e avaliações' }
   ],
   paths: {
     '/api/health': {
@@ -90,7 +89,7 @@ const openApiDocument = {
     '/api/recipes': {
       get: {
         tags: ['Receitas'],
-        summary: 'Lista receitas em formato de prévia',
+        summary: 'Lista receitas ativas em formato de prévia',
         parameters: [
           {
             name: 'search',
@@ -117,17 +116,42 @@ const openApiDocument = {
             }
           }
         }
+      },
+      post: {
+        tags: ['Receitas'],
+        summary: 'Publica uma nova receita',
+        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin.',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/RecipeInput' }
+            }
+          }
+        },
+        responses: {
+          201: {
+            description: 'Receita publicada com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/RecipeResponse' }
+              }
+            }
+          },
+          400: { $ref: '#/components/responses/BadRequest' },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' }
+        }
       }
     },
     '/api/recipes/{id}': {
       get: {
         tags: ['Receitas'],
         summary: 'Consulta detalhes de uma receita',
-        description: 'Visitantes recebem apenas a prévia. Usuários autenticados recebem a receita completa.',
+        description: 'Visitantes recebem apenas a prévia. Usuários autenticados recebem a receita completa. Receitas removidas por soft delete não são retornadas.',
         security: [{ bearerAuth: [] }],
-        parameters: [
-          { $ref: '#/components/parameters/RecipeId' }
-        ],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
         responses: {
           200: {
             description: 'Receita encontrada',
@@ -144,6 +168,54 @@ const openApiDocument = {
           },
           404: { $ref: '#/components/responses/NotFound' }
         }
+      },
+      put: {
+        tags: ['Receitas'],
+        summary: 'Atualiza uma receita existente',
+        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin.',
+        security: [{ bearerAuth: [] }],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/RecipeInput' }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Receita atualizada com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/RecipeResponse' }
+              }
+            }
+          },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
+      },
+      delete: {
+        tags: ['Receitas'],
+        summary: 'Exclui uma receita com soft delete',
+        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin. A receita não é removida fisicamente do banco JSON.',
+        security: [{ bearerAuth: [] }],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
+        responses: {
+          200: {
+            description: 'Receita marcada como removida',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/SoftDeleteRecipeResponse' }
+              }
+            }
+          },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
       }
     },
     '/api/recipes/{id}/favorite': {
@@ -151,9 +223,7 @@ const openApiDocument = {
         tags: ['Interações'],
         summary: 'Adiciona uma receita aos favoritos do usuário autenticado',
         security: [{ bearerAuth: [] }],
-        parameters: [
-          { $ref: '#/components/parameters/RecipeId' }
-        ],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
         responses: {
           200: {
             description: 'Receita favoritada com sucesso',
@@ -191,9 +261,7 @@ const openApiDocument = {
         tags: ['Interações'],
         summary: 'Adiciona comentário em uma receita',
         security: [{ bearerAuth: [] }],
-        parameters: [
-          { $ref: '#/components/parameters/RecipeId' }
-        ],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
         requestBody: {
           required: true,
           content: {
@@ -222,9 +290,7 @@ const openApiDocument = {
         tags: ['Interações'],
         summary: 'Avalia uma receita',
         security: [{ bearerAuth: [] }],
-        parameters: [
-          { $ref: '#/components/parameters/RecipeId' }
-        ],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
         requestBody: {
           required: true,
           content: {
@@ -244,67 +310,6 @@ const openApiDocument = {
           },
           400: { $ref: '#/components/responses/BadRequest' },
           401: { $ref: '#/components/responses/Unauthorized' },
-          404: { $ref: '#/components/responses/NotFound' }
-        }
-      }
-    },
-    '/api/admin/recipes': {
-      post: {
-        tags: ['Admin'],
-        summary: 'Publica uma nova receita',
-        description: 'Endpoint permitido apenas para usuários com perfil admin.',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/RecipeInput' }
-            }
-          }
-        },
-        responses: {
-          201: {
-            description: 'Receita publicada com sucesso',
-            content: {
-              'application/json': {
-                schema: { $ref: '#/components/schemas/RecipeResponse' }
-              }
-            }
-          },
-          400: { $ref: '#/components/responses/BadRequest' },
-          401: { $ref: '#/components/responses/Unauthorized' },
-          403: { $ref: '#/components/responses/Forbidden' }
-        }
-      }
-    },
-    '/api/admin/recipes/{id}': {
-      put: {
-        tags: ['Admin'],
-        summary: 'Edita uma receita existente',
-        description: 'Endpoint permitido apenas para usuários com perfil admin.',
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          { $ref: '#/components/parameters/RecipeId' }
-        ],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/RecipeInput' }
-            }
-          }
-        },
-        responses: {
-          200: {
-            description: 'Receita editada com sucesso',
-            content: {
-              'application/json': {
-                schema: { $ref: '#/components/schemas/RecipeResponse' }
-              }
-            }
-          },
-          401: { $ref: '#/components/responses/Unauthorized' },
-          403: { $ref: '#/components/responses/Forbidden' },
           404: { $ref: '#/components/responses/NotFound' }
         }
       }
@@ -456,6 +461,11 @@ const openApiDocument = {
                 type: 'string',
                 example: 'O pulo do gato é untar a forma com manteiga e fubá.'
               },
+              deletedAt: {
+                type: 'string',
+                nullable: true,
+                example: null
+              },
               comments: {
                 type: 'array',
                 items: { $ref: '#/components/schemas/Comment' }
@@ -515,6 +525,13 @@ const openApiDocument = {
       RecipeResponse: {
         type: 'object',
         properties: {
+          recipe: { $ref: '#/components/schemas/Recipe' }
+        }
+      },
+      SoftDeleteRecipeResponse: {
+        type: 'object',
+        properties: {
+          message: { type: 'string', example: 'Receita removida com soft delete.' },
           recipe: { $ref: '#/components/schemas/Recipe' }
         }
       },

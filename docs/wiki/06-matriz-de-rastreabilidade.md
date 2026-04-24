@@ -11,3 +11,5 @@
 | US10 | CT07 | E2E / API | A definir | A definir |
 | US12 | CT08 | API | A definir | A definir |
 | US11 | CT09 | API / E2E | A definir | A definir |
+| US13 | CT10 | API | A definir | A definir |
+| US15 | CT11 | API | A definir | A definir |

@@ -11,9 +11,10 @@
 - `Admin`: responsável por cadastrar, publicar e editar receitas
 
 ## Regras De Negócio
-- Somente o `admin` pode publicar receitas
+- Somente o `admin` pode criar, publicar, editar e excluir receitas
 - Usuário logado pode consultar receitas completas, favoritar, comentar e avaliar
 - Visitante vê apenas uma prévia da receita e precisa se cadastrar/logar para acessar o conteúdo completo
+- A exclusão de receita deve ser realizada com `soft delete`
 - Toda receita deve seguir a estrutura:
   - Título
   - Resumo
@@ -39,7 +40,7 @@ Objetivo: exibir a receita com o template completo definido pelo negócio.
 Objetivo: permitir favoritar, comentar e avaliar receitas.
 
 ### EP06 - Gestão Administrativa de Conteúdo
-Objetivo: garantir que apenas o admin publique e mantenha receitas.
+Objetivo: garantir que apenas o admin realize o CRUD administrativo das receitas.
 
 ## User Stories
 
@@ -212,6 +213,20 @@ E existe uma receita publicada
 Quando altero dados válidos da receita
 E salvo a edição
 Então as alterações devem ser persistidas com sucesso
+```
+
+### US15 - Excluir receita com soft delete
+Como admin, quero excluir receitas com soft delete para retirar conteúdos do catálogo sem apagá-los fisicamente.
+
+Critérios de aceite:
+
+```gherkin
+Cenário: Excluir receita com soft delete
+Dado que estou autenticado como admin
+E existe uma receita publicada
+Quando solicito a exclusão da receita
+Então o sistema deve marcar a receita como excluída logicamente
+E a receita não deve mais aparecer na listagem nem nos detalhes públicos
 ```
 
 ### US14 - Visualizar favoritos

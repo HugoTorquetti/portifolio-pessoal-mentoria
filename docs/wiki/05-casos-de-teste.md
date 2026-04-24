@@ -46,3 +46,13 @@
 - Pré-condição: admin autenticado
 - Passos: preencher campos obrigatórios e salvar
 - Resultado esperado: receita publicada
+
+### CT10 - Admin edita receita
+- Pré-condição: admin autenticado e receita existente
+- Passos: alterar dados válidos e salvar
+- Resultado esperado: alterações persistidas
+
+### CT11 - Admin exclui receita com soft delete
+- Pré-condição: admin autenticado e receita existente
+- Passos: solicitar exclusão
+- Resultado esperado: receita marcada como excluída logicamente e oculta do catálogo
