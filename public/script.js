@@ -1,9 +1,42 @@
 const recipesContainer = document.querySelector('#recipes');
 const filtersForm = document.querySelector('#filters');
+const signupForm = document.querySelector('#signup-form');
 const loginForm = document.querySelector('#login-form');
 const loginMessage = document.querySelector('#login-message');
+const feedbackModal = document.querySelector('#feedback-modal');
+const feedbackTag = document.querySelector('#feedback-tag');
+const feedbackTitle = document.querySelector('#feedback-title');
+const feedbackText = document.querySelector('#feedback-text');
+const feedbackCloseButton = document.querySelector('#feedback-close');
 
 let authToken = '';
+
+function showMessage(element, message) {
+  if (element) {
+    element.textContent = message;
+  }
+}
+
+function openFeedbackModal({ status, title, message }) {
+  if (!feedbackModal) {
+    return;
+  }
+
+  feedbackTag.textContent = status === 'success' ? 'Cadastro concluído' : 'Não foi possível concluir';
+  feedbackTitle.textContent = title;
+  feedbackText.textContent = message;
+  feedbackModal.hidden = false;
+  document.body.classList.add('modal-open');
+}
+
+function closeFeedbackModal() {
+  if (!feedbackModal) {
+    return;
+  }
+
+  feedbackModal.hidden = true;
+  document.body.classList.remove('modal-open');
+}
 
 async function fetchRecipes(params = {}) {
   if (!recipesContainer) {
@@ -26,6 +59,12 @@ async function fetchRecipes(params = {}) {
     .join('');
 }
 
+if (feedbackCloseButton) {
+  feedbackCloseButton.addEventListener('click', () => {
+    closeFeedbackModal();
+  });
+}
+
 if (filtersForm) {
   filtersForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -33,6 +72,41 @@ if (filtersForm) {
       search: document.querySelector('#search').value,
       category: document.querySelector('#category').value
     });
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const payload = {
+      name: document.querySelector('#signup-name').value.trim(),
+      email: document.querySelector('#signup-email').value.trim(),
+      password: document.querySelector('#signup-password').value
+    };
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    const isSuccess = response.ok;
+
+    openFeedbackModal({
+      status: isSuccess ? 'success' : 'error',
+      title: isSuccess ? 'Sua conta foi criada.' : 'Seu cadastro não pôde ser concluído.',
+      message: isSuccess
+        ? 'Conta criada com sucesso. Agora você já pode entrar.'
+        : data.message
+    });
+
+    if (!isSuccess) {
+      return;
+    }
+
+    signupForm.reset();
   });
 }
 
@@ -51,9 +125,12 @@ if (loginForm) {
 
     const data = await response.json();
     authToken = data.token || '';
-    loginMessage.textContent = authToken
-      ? `Bem-vindo, ${data.user.name}.`
-      : data.message;
+    showMessage(
+      loginMessage,
+      authToken
+        ? `Bem-vindo, ${data.user.name}.`
+        : data.message
+    );
   });
 }
 

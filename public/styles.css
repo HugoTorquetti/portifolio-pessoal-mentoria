@@ -27,6 +27,19 @@ body {
     linear-gradient(135deg, #fff4df, #f9ead2 45%, #fdfaf2);
 }
 
+#page-content {
+  transition: filter 220ms ease, transform 220ms ease;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+body.modal-open #page-content {
+  filter: blur(14px);
+  transform: scale(0.995);
+}
+
 .hero,
 main {
   padding-left: 8vw;
@@ -180,13 +193,33 @@ main {
   padding: 1.8rem;
 }
 
+.access-copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.access-copy p {
+  margin: 0;
+}
+
+.signup-shell,
 .signup-card {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.signup-shell {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   background:
     radial-gradient(circle at top right, rgba(111, 143, 114, 0.18), transparent 16rem),
     rgba(255, 255, 255, 0.84);
+}
+
+.signup-card {
+  padding: 1.4rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 1.4rem;
 }
 
 .login-shell {
@@ -202,6 +235,7 @@ main {
   border-radius: 1.4rem;
 }
 
+.signup-card label,
 .login-card label {
   display: grid;
   gap: 0.45rem;
@@ -228,9 +262,63 @@ select {
   font-size: 1.28rem;
 }
 
-#login-message {
+#login-message,
+#signup-message {
   margin: 0;
   min-height: 1.25rem;
+}
+
+.feedback-modal[hidden] {
+  display: none;
+}
+
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.feedback-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(75, 46, 36, 0.26);
+}
+
+.feedback-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 29rem);
+  padding: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 223, 0.94)),
+    var(--paper);
+  box-shadow: 0 28px 70px rgba(75, 46, 36, 0.28);
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+}
+
+.feedback-dialog h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.feedback-dialog p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.feedback-tag {
+  margin-bottom: 0;
+}
+
+.feedback-dialog button {
+  justify-self: center;
+  min-width: 8rem;
 }
 
 @media (max-width: 960px) {
