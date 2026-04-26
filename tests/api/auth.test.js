@@ -22,6 +22,19 @@ describe('API - Autenticação', () => {
     expect(response.body.user).to.not.have.property('password');
   });
 
+  it('bloqueia cadastro com e-mail já cadastrado', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Guardiã repetida',
+        email: 'usuario@receitasdavo.com',
+        password: 'senha123'
+      });
+
+    expect(response.status).to.equal(409);
+    expect(response.body.message).to.equal('E-mail já cadastrado.');
+  });
+
   it('realiza login com credenciais válidas', async () => {
     const response = await request(app)
       .post('/api/auth/login')

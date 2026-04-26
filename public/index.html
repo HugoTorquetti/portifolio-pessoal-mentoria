@@ -7,104 +7,139 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Guardiões da Memória</p>
-        <h1>Receitas da Vó</h1>
-        <p class="hero-text">
-          Um lugar para preservar memórias familiares através da comida,
-          ensinando cada receita com clareza para repetir o sabor e o
-          sentimento de casa.
-        </p>
-        <div class="hero-actions">
-          <a href="#acesso" class="button">Quero me cadastrar</a>
-          <a href="#login" class="button button-secondary">Já tenho conta</a>
-        </div>
-      </div>
-
-      <aside class="hero-aside">
-        <h2>Receitas que guardam histórias, não só ingredientes.</h2>
-        <p>
-          Cada prato reúne contexto, checklist, método e o pulo do gato para
-          transformar lembrança em prática na cozinha.
-        </p>
-      </aside>
-    </header>
-
-    <main>
-      <section class="panel manifesto">
-        <div>
-          <h2>Comida também é herança.</h2>
-        </div>
-        <p>
-          O Receitas da Vó nasceu para ajudar famílias a não perderem aquilo
-          que costumava estar só na memória de alguém: a textura certa do bolo,
-          o cheiro do almoço de domingo, o segredo que fazia toda a diferença.
-        </p>
-      </section>
-
-      <section class="panel pillars">
-        <article class="pillar-card">
-          <h3>Memória afetiva</h3>
-          <p>
-            Cada receita parte do que ela representa para a família, e não só
-            da lista de ingredientes.
+    <div id="page-content">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Guardiões da Memória</p>
+          <h1>Receitas da Vó</h1>
+          <p class="hero-text">
+            Um lugar para preservar memórias familiares através da comida,
+            ensinando cada receita com clareza para repetir o sabor e o
+            sentimento de casa.
           </p>
-        </article>
-
-        <article class="pillar-card">
-          <h3>Passo a passo claro</h3>
-          <p>
-            O preparo é dividido em etapas lógicas para qualquer pessoa
-            conseguir cozinhar com mais confiança.
-          </p>
-        </article>
-
-        <article class="pillar-card">
-          <h3>Segredo de família</h3>
-          <p>
-            O "pulo do gato" aparece como conhecimento técnico herdado, aquele
-            detalhe que muda tudo no resultado.
-          </p>
-        </article>
-      </section>
-
-      <section id="acesso" class="panel access-hub">
-        <div class="access-card signup-card">
-          <p class="section-tag">Primeiro passo</p>
-          <h2>Crie sua conta</h2>
-          <p>
-            Faça parte dos Guardiões da Memória para ter acesso a receitas
-            completas, favoritos, comentários e avaliações.
-          </p>
-          <a href="#login" class="button">Começar minha jornada</a>
+          <div class="hero-actions">
+            <a href="#acesso" class="button">Quero me cadastrar</a>
+            <a href="#login" class="button button-secondary">Já tenho conta</a>
+          </div>
         </div>
 
-        <div id="login" class="access-card login-shell">
+        <aside class="hero-aside">
+          <h2>Receitas que guardam histórias, não só ingredientes.</h2>
+          <p>
+            Cada prato reúne contexto, checklist, método e o pulo do gato para
+            transformar lembrança em prática na cozinha.
+          </p>
+        </aside>
+      </header>
+
+      <main>
+        <section class="panel manifesto">
           <div>
-            <p class="section-tag">Já faz parte?</p>
-            <h2>Entre para continuar</h2>
+            <h2>Comida também é herança.</h2>
+          </div>
+          <p>
+            O Receitas da Vó nasceu para ajudar famílias a não perderem aquilo
+            que costumava estar só na memória de alguém: a textura certa do bolo,
+            o cheiro do almoço de domingo, o segredo que fazia toda a diferença.
+          </p>
+        </section>
+
+        <section class="panel pillars">
+          <article class="pillar-card">
+            <h3>Memória afetiva</h3>
             <p>
-              Use a área de login para acessar a versão completa das receitas já
-              publicadas.
+              Cada receita parte do que ela representa para a família, e não só
+              da lista de ingredientes.
             </p>
+          </article>
+
+          <article class="pillar-card">
+            <h3>Passo a passo claro</h3>
+            <p>
+              O preparo é dividido em etapas lógicas para qualquer pessoa
+              conseguir cozinhar com mais confiança.
+            </p>
+          </article>
+
+          <article class="pillar-card">
+            <h3>Segredo de família</h3>
+            <p>
+              O "pulo do gato" aparece como conhecimento técnico herdado, aquele
+              detalhe que muda tudo no resultado.
+            </p>
+          </article>
+        </section>
+
+        <section id="acesso" class="panel access-hub">
+          <div class="access-card signup-shell">
+            <p class="section-tag">Primeiro passo</p>
+            <div class="access-copy">
+              <h2>Crie sua conta</h2>
+              <p>
+                Faça parte dos Guardiões da Memória para ter acesso a receitas
+                completas, favoritos, comentários e avaliações.
+              </p>
+            </div>
+
+            <form id="signup-form" class="signup-card">
+              <label>
+                Nome
+                <input id="signup-name" type="text" placeholder="Seu nome" />
+              </label>
+              <label>
+                E-mail
+                <input id="signup-email" type="email" placeholder="voce@email.com" />
+              </label>
+              <label>
+                Senha
+                <input id="signup-password" type="password" placeholder="Crie uma senha" />
+              </label>
+              <button type="submit">Começar minha jornada</button>
+            </form>
           </div>
 
-          <form id="login-form" class="login-card">
-            <label>
-              E-mail
-              <input id="email" type="email" value="usuario@receitasdavo.com" />
-            </label>
-            <label>
-              Senha
-              <input id="password" type="password" value="usuario123" />
-            </label>
-            <button type="submit">Entrar</button>
-            <p id="login-message" aria-live="polite"></p>
-          </form>
-        </div>
-      </section>
-    </main>
+          <div id="login" class="access-card login-shell">
+            <div>
+              <p class="section-tag">Já faz parte?</p>
+              <h2>Entre para continuar</h2>
+              <p>
+                Use a área de login para acessar a versão completa das receitas já
+                publicadas.
+              </p>
+            </div>
+
+            <form id="login-form" class="login-card">
+              <label>
+                E-mail
+                <input id="email" type="email" value="usuario@receitasdavo.com" />
+              </label>
+              <label>
+                Senha
+                <input id="password" type="password" value="usuario123" />
+              </label>
+              <button type="submit">Entrar</button>
+              <p id="login-message" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="feedback-modal" class="feedback-modal" hidden>
+      <div class="feedback-overlay"></div>
+      <div
+        class="feedback-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feedback-title"
+        aria-describedby="feedback-text"
+      >
+        <p id="feedback-tag" class="section-tag feedback-tag"></p>
+        <h2 id="feedback-title"></h2>
+        <p id="feedback-text"></p>
+        <button id="feedback-close" type="button">OK</button>
+      </div>
+    </div>
 
     <script src="./script.js"></script>
   </body>
