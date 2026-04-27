@@ -1,9 +1,11 @@
 describe('US02 - Cadastro de usuário', () => {
   it('cadastra um visitante com dados válidos', () => {
+    const uniqueEmail = `nova.guardiao.${Date.now()}@example.com`;
+
     cy.visit('/');
 
     cy.get('#signup-name').type('Nova Guardiã');
-    cy.get('#signup-email').type('nova.guardiao@example.com');
+    cy.get('#signup-email').type(uniqueEmail);
     cy.get('#signup-password').type('senha123');
     cy.get('#signup-form button[type="submit"]').click();
 
