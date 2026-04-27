@@ -38,6 +38,11 @@ function closeFeedbackModal() {
   document.body.classList.remove('modal-open');
 }
 
+function storeAuthenticatedSession(token, user) {
+  localStorage.setItem('receitasDaVoToken', token);
+  localStorage.setItem('receitasDaVoUser', JSON.stringify(user));
+}
+
 async function fetchRecipes(params = {}) {
   if (!recipesContainer) {
     return;
@@ -124,13 +129,22 @@ if (loginForm) {
     });
 
     const data = await response.json();
-    authToken = data.token || '';
-    showMessage(
-      loginMessage,
-      authToken
-        ? `Bem-vindo, ${data.user.name}.`
-        : data.message
-    );
+    const isSuccess = response.ok;
+
+    authToken = isSuccess ? data.token : '';
+    showMessage(loginMessage, isSuccess ? `Bem-vindo, ${data.user.name}.` : data.message);
+
+    if (!isSuccess) {
+      openFeedbackModal({
+        status: 'error',
+        title: 'Não foi possível entrar.',
+        message: data.message
+      });
+      return;
+    }
+
+    storeAuthenticatedSession(data.token, data.user);
+    window.location.assign('./app.html');
   });
 }
 
