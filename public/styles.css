@@ -13,6 +13,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -256,6 +260,34 @@ main {
   padding-left: 1.1rem;
   display: grid;
   gap: 0.55rem;
+}
+
+.public-catalog {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.public-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.recipe-card {
+  padding: 1.6rem;
+  display: grid;
+  gap: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.recipe-card h3 {
+  font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+}
+
+.recipe-card p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 input,
@@ -573,6 +605,12 @@ select {
   font-weight: 700;
 }
 
+.button-link-secondary {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(75, 46, 36, 0.14);
+  color: var(--coffee);
+}
+
 .dashboard-empty {
   margin: 1rem 0 0;
   color: var(--clay);
@@ -623,6 +661,11 @@ select {
   gap: 0.85rem;
 }
 
+.recipe-gated-sections {
+  display: grid;
+  gap: 1.75rem;
+}
+
 .recipe-detail-card,
 .recipe-status-card {
   margin: 0;
@@ -664,6 +707,40 @@ select {
   color: inherit;
 }
 
+.recipe-public-actions,
+.recipe-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.recipe-preview-cta {
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(181, 83, 50, 0.14), transparent 12rem),
+    rgba(255, 255, 255, 0.92);
+}
+
+.recipe-preview-cta h2 {
+  font-size: clamp(1.6rem, 2.4vw, 2.15rem);
+}
+
+.recipe-preview-cta p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.recipe-gated-sections.is-preview,
+.recipe-tip-card.is-preview {
+  filter: blur(14px);
+  opacity: 0.72;
+  pointer-events: none;
+  user-select: none;
+}
+
 @media (max-width: 960px) {
   .hero,
   .manifesto,
@@ -672,7 +749,8 @@ select {
   .dashboard-hero,
   .dashboard-grid,
   .dashboard-support-grid,
-  .dashboard-recipe-grid {
+  .dashboard-recipe-grid,
+  .public-recipe-grid {
     grid-template-columns: 1fr;
   }
 
@@ -684,6 +762,10 @@ select {
   .dashboard-header-nav {
     width: 100%;
     grid-template-columns: 1fr;
+  }
+
+  .recipe-public-actions {
+    width: 100%;
   }
 }
 
