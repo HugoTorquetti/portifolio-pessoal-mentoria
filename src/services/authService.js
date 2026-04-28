@@ -5,9 +5,17 @@ function sanitizeUser(user) {
   return safeUser;
 }
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function registerUser({ name, email, password }) {
   if (!name || !email || !password) {
     return { status: 400, body: { message: 'Nome, e-mail e senha são obrigatórios.' } };
+  }
+
+  if (!isValidEmail(email)) {
+    return { status: 400, body: { message: 'E-mail em formato inválido.' } };
   }
 
   const database = readDatabase();
@@ -71,6 +79,7 @@ function getAuthenticatedUser(authorizationHeader) {
 
 module.exports = {
   getAuthenticatedUser,
+  isValidEmail,
   loginUser,
   registerUser,
   sanitizeUser

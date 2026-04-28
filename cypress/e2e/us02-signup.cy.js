@@ -34,4 +34,17 @@ describe('US02 - Cadastro de usuário', () => {
     cy.get('#feedback-close').click();
     cy.get('#feedback-modal').should('not.be.visible');
   });
+
+  it('impede cadastro com e-mail em formato inválido', () => {
+    cy.visit('/');
+
+    cy.get('#signup-name').type('Luke Skywalker');
+    cy.get('#signup-email').type('luke@jedi');
+    cy.get('#signup-password').type('123456');
+    cy.get('#signup-form button[type="submit"]').click();
+
+    cy.get('#feedback-modal').should('be.visible');
+    cy.contains('Seu cadastro não pôde ser concluído.').should('be.visible');
+    cy.contains('E-mail em formato inválido.').should('be.visible');
+  });
 });

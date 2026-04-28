@@ -22,6 +22,19 @@ describe('API - Autenticação', () => {
     expect(response.body.user).to.not.have.property('password');
   });
 
+  it('bloqueia cadastro com e-mail em formato inválido', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Luke Skywalker',
+        email: 'luke@jedi',
+        password: '123456'
+      });
+
+    expect(response.status).to.equal(400);
+    expect(response.body.message).to.equal('E-mail em formato inválido.');
+  });
+
   it('bloqueia cadastro com e-mail já cadastrado', async () => {
     const response = await request(app)
       .post('/api/auth/register')
