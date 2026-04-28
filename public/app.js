@@ -5,6 +5,8 @@ const userAvatar = document.querySelector('#user-avatar');
 const sessionUserName = document.querySelector('#session-user-name');
 const dashboardTitle = document.querySelector('#dashboard-title');
 const dashboardText = document.querySelector('#dashboard-text');
+const authenticatedRecipesContainer = document.querySelector('#authenticated-recipes');
+const authenticatedRecipesEmpty = document.querySelector('#authenticated-recipes-empty');
 
 if (!storedUser || !storedToken) {
   window.location.replace('./index.html');
@@ -40,6 +42,54 @@ if (user) {
     dashboardText.textContent = 'Sua sessão está ativa. Agora você pode explorar receitas completas, rever suas favoritas e continuar sua jornada afetiva pela plataforma.';
   }
 }
+
+function renderAuthenticatedRecipes(recipes) {
+  if (!authenticatedRecipesContainer) {
+    return;
+  }
+
+  if (!recipes.length) {
+    authenticatedRecipesContainer.innerHTML = '';
+
+    if (authenticatedRecipesEmpty) {
+      authenticatedRecipesEmpty.hidden = false;
+    }
+
+    return;
+  }
+
+  if (authenticatedRecipesEmpty) {
+    authenticatedRecipesEmpty.hidden = true;
+  }
+
+  authenticatedRecipesContainer.innerHTML = recipes
+    .map((recipe) => `
+      <article class="recipe-preview-card">
+        <p class="recipe-preview-category">${recipe.category}</p>
+        <h3>${recipe.title}</h3>
+        <p>${recipe.summary}</p>
+        <a class="button-link" href="./recipe.html?id=${recipe.id}">Ver receita completa</a>
+      </article>
+    `)
+    .join('');
+}
+
+async function loadAuthenticatedRecipes() {
+  if (!authenticatedRecipesContainer) {
+    return;
+  }
+
+  const response = await fetch('/api/recipes', {
+    headers: {
+      Authorization: `Bearer ${storedToken}`
+    }
+  });
+  const data = await response.json();
+
+  renderAuthenticatedRecipes(data.recipes || []);
+}
+
+loadAuthenticatedRecipes();
 
 if (logoutButton) {
   logoutButton.addEventListener('click', () => {
