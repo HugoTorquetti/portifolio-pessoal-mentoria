@@ -44,16 +44,22 @@
           </p>
         </section>
 
-        <section class="dashboard-grid">
-          <article id="receitas" class="panel dashboard-card">
-            <p class="section-tag"></p>
-            <h2>Todas as receitas</h2>
+        <section id="receitas" class="panel recipe-library-panel">
+          <div class="section-heading">
+            <h2>Receitas publicadas</h2>
             <p>
-              Navegue por receitas completas com contexto, checklist, método e o
-              pulo do gato de cada preparo.
+              Escolha uma memória afetiva para abrir a receita completa com
+              contexto, checklist, método e o pulo do gato do preparo.
             </p>
-          </article>
+          </div>
 
+          <div id="authenticated-recipes" class="dashboard-recipe-grid"></div>
+          <p id="authenticated-recipes-empty" class="dashboard-empty" hidden>
+            Nenhuma receita publicada foi encontrada no momento.
+          </p>
+        </section>
+
+        <section class="dashboard-grid dashboard-support-grid">
           <article id="favoritos" class="panel dashboard-card">
             <p class="section-tag"></p>
             <h2>Minhas favoritas</h2>
