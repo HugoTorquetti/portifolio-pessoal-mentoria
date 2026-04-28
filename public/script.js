@@ -149,18 +149,14 @@ if (loginForm) {
 }
 
 if (recipesContainer) {
-  recipesContainer.addEventListener('click', async (event) => {
+  recipesContainer.addEventListener('click', (event) => {
     const button = event.target.closest('button[data-recipe-id]');
 
-    if (!button) return;
+    if (!button) {
+      return;
+    }
 
-    const headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
-    const response = await fetch(`/api/recipes/${button.dataset.recipeId}`, { headers });
-    const data = await response.json();
-
-    alert(data.access === 'complete'
-      ? `Pulo do gato: ${data.recipe.expertTip}`
-      : data.message);
+    window.location.assign(`./recipe.html?id=${button.dataset.recipeId}`);
   });
 
   fetchRecipes();
