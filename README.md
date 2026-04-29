@@ -1,37 +1,19 @@
-# Receitas da Vó
+# Receitas da Vo - API
 
-## Visão Geral
-`Receitas da Vó` é uma aplicação web voltada para pessoas que buscam conexão emocional através da comida, chamadas no contexto do projeto de `Guardiões da Memória`.
+Este repositório concentra a API do projeto Receitas da Vo.
 
-O produto tem como objetivo ajudar usuários a preservar memórias familiares por meio de receitas com valor afetivo, apresentando instruções claras para que qualquer pessoa consiga reproduzir o sabor e o sentimento de casa em sua própria cozinha.
+A aplicação web e o Backend For Frontend foram separados para o repositório `frontend-portifólio-pessoal-mentoria`.
 
-## Objetivo Deste Repositório
-Este repositório concentrará todo o ciclo de desenvolvimento do projeto:
+## Responsabilidades
 
-- gestão do backlog
-- documentação funcional e de qualidade
-- registro de defeitos
-- automação de testes
-- pipeline de CI/CD
+- autenticação e sessão
+- CRUD de receitas
+- regra de acesso para prévia e receita completa
+- favoritos, comentários e avaliações
+- documentação Swagger/OpenAPI
+- testes unitários, API e smoke
 
-## Organização Planejada No GitHub
-- `Projects`: gestão de épicos, user stories, bugs e progresso
-- `Issues`: histórias, tarefas, bugs e rastreabilidade
-- `Wiki`: estratégia de testes, plano de testes, casos de teste e documentação funcional
-- `Actions`: execução da pipeline de qualidade
-- `Pull Requests`: revisão e controle de mudanças
-
-## Estrutura Inicial Do Repositório
-- [docs/planning/product-backlog.md](/C:/projetos/portifolio-pessoal-mentoria/docs/planning/product-backlog.md)
-- [docs/planning/github-project-setup.md](/C:/projetos/portifolio-pessoal-mentoria/docs/planning/github-project-setup.md)
-- [docs/planning/quality-strategy.md](/C:/projetos/portifolio-pessoal-mentoria/docs/planning/quality-strategy.md)
-- [docs/planning/roadmap.md](/C:/projetos/portifolio-pessoal-mentoria/docs/planning/roadmap.md)
-- [docs/wiki/Home.md](/C:/projetos/portifolio-pessoal-mentoria/docs/wiki/Home.md)
-
-## Status Atual
-O projeto possui planejamento funcional, documentação de qualidade, estrutura web inicial, API base e esteira inicial de testes.
-
-## Como Executar Localmente
+## Como Executar
 
 Pré-requisito:
 - Node.js instalado
@@ -42,42 +24,36 @@ Instalar dependências:
 npm install
 ```
 
-Subir aplicação:
+Subir API:
 
 ```bash
 npm start
 ```
 
-Aplicação:
-- `http://localhost:3000`
+API:
+- `http://localhost:3000/api`
 
 Health check:
 - `http://localhost:3000/api/health`
 
-Documentação Swagger:
+Swagger:
 - `http://localhost:3000/api-docs`
 
-Contrato OpenAPI em JSON:
+Contrato OpenAPI:
 - `http://localhost:3000/api-docs.json`
 
-## Como Executar Testes
+## Testes
 
-Testes unitários, API e smoke:
+Executar testes unitários, API e smoke:
 
 ```bash
 npm test
 ```
 
-Testes de API:
+Executar apenas testes de API:
 
 ```bash
 npm run test:api
-```
-
-Testes E2E com Cypress:
-
-```bash
-npm run test:e2e
 ```
 
 ## Credenciais Iniciais

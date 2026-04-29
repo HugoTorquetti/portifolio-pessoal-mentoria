@@ -1,7 +1,7 @@
 {
-  "name": "receitas-da-vo",
+  "name": "api-portifolio-pessoal-mentoria",
   "version": "0.1.0",
-  "description": "Aplicação web Receitas da Vó para preservar memórias familiares por meio de receitas afetivas.",
+  "description": "API do Receitas da Vo para gerenciamento de receitas afetivas.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -9,14 +9,12 @@
     "test": "npm run test:unit && npm run test:api && npm run test:smoke",
     "test:unit": "mocha \"tests/unit/**/*.test.js\" --exit",
     "test:api": "mocha \"tests/api/**/*.test.js\" --exit",
-    "test:smoke": "mocha \"tests/smoke/**/*.test.js\" --exit",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open"
+    "test:smoke": "mocha \"tests/smoke/**/*.test.js\" --exit"
   },
   "keywords": [
     "receitas",
     "qa",
-    "cypress",
+    "api",
     "supertest"
   ],
   "author": "Hugo Torquetti",
@@ -28,7 +26,6 @@
   },
   "devDependencies": {
     "chai": "^4.5.0",
-    "cypress": "^13.17.0",
     "mocha": "^10.8.2",
     "supertest": "^7.0.0"
   }
