@@ -2,7 +2,7 @@ const openApiDocument = {
   openapi: '3.0.3',
   info: {
     title: 'Receitas da Vó API',
-    version: '0.3.0',
+    version: '0.4.0',
     description: 'API do sistema Receitas da Vó para autenticação, consulta de receitas, interações de usuário e CRUD de receitas com regras administrativas.'
   },
   servers: [
@@ -171,8 +171,8 @@ const openApiDocument = {
       },
       put: {
         tags: ['Receitas'],
-        summary: 'Atualiza uma receita existente',
-        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin.',
+        summary: 'Substitui uma receita existente',
+        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin. Exige o envio de todos os campos obrigatórios da receita.',
         security: [{ bearerAuth: [] }],
         parameters: [{ $ref: '#/components/parameters/RecipeId' }],
         requestBody: {
@@ -192,6 +192,35 @@ const openApiDocument = {
               }
             }
           },
+          401: { $ref: '#/components/responses/Unauthorized' },
+          403: { $ref: '#/components/responses/Forbidden' },
+          404: { $ref: '#/components/responses/NotFound' }
+        }
+      },
+      patch: {
+        tags: ['Receitas'],
+        summary: 'Atualiza parcialmente uma receita existente',
+        description: 'Operação do CRUD de receitas. Permitida apenas para usuários com perfil admin. Permite enviar somente os campos da receita que precisam ser alterados.',
+        security: [{ bearerAuth: [] }],
+        parameters: [{ $ref: '#/components/parameters/RecipeId' }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/RecipePatchInput' }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'Receita atualizada parcialmente com sucesso',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/RecipeResponse' }
+              }
+            }
+          },
+          400: { $ref: '#/components/responses/BadRequest' },
           401: { $ref: '#/components/responses/Unauthorized' },
           403: { $ref: '#/components/responses/Forbidden' },
           404: { $ref: '#/components/responses/NotFound' }
@@ -578,6 +607,27 @@ const openApiDocument = {
             example: ['Cozinhar o arroz.', 'Adicionar leite e açúcar.']
           },
           expertTip: { type: 'string', example: 'Canela entra só no final para perfumar.' }
+        }
+      },
+      RecipePatchInput: {
+        type: 'object',
+        minProperties: 1,
+        description: 'Payload para atualização parcial. Informe apenas os campos da receita que devem ser alterados.',
+        properties: {
+          title: { type: 'string', example: 'Arroz Doce de Festa Atualizado' },
+          category: { type: 'string', example: 'Doces' },
+          summary: { type: 'string', example: 'Receita atualizada com uma memória adicional da família.' },
+          successChecklist: {
+            type: 'array',
+            items: { type: 'string' },
+            example: ['Separe os ingredientes em temperatura ambiente.']
+          },
+          steps: {
+            type: 'array',
+            items: { type: 'string' },
+            example: ['Cozinhar o arroz.', 'Adicionar leite e açúcar aos poucos.']
+          },
+          expertTip: { type: 'string', example: 'Finalize com canela apenas depois de desligar o fogo.' }
         }
       },
       RecipeListResponse: {

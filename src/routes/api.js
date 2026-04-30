@@ -10,6 +10,7 @@ const {
   getRecipeDetails,
   listFavorites,
   listRecipes,
+  patchRecipe,
   removeFavoriteRecipe,
   softDeleteRecipe,
   updateComment,
@@ -49,6 +50,10 @@ function createApiRouter() {
 
   router.put('/recipes/:id', requireAuth, (req, res) => {
     return sendServiceResponse(res, updateRecipe(req.user, req.params.id, req.body));
+  });
+
+  router.patch('/recipes/:id', requireAuth, (req, res) => {
+    return sendServiceResponse(res, patchRecipe(req.user, req.params.id, req.body));
   });
 
   router.delete('/recipes/:id', requireAuth, (req, res) => {
