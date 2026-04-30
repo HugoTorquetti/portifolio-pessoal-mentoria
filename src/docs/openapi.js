@@ -424,7 +424,7 @@ const openApiDocument = {
       bearerAuth: {
         type: 'http',
         scheme: 'bearer',
-        bearerFormat: 'Token'
+        bearerFormat: 'JWT'
       }
     },
     parameters: {
@@ -539,7 +539,11 @@ const openApiDocument = {
       LoginResponse: {
         type: 'object',
         properties: {
-          token: { type: 'string', example: 'token-2-1710000000000' },
+          token: {
+            type: 'string',
+            description: 'JWT assinado usado no header Authorization como Bearer token.',
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTAwMDAwMDAsImV4cCI6MTcxMDAwMzYwMH0.signature'
+          },
           user: { $ref: '#/components/schemas/User' }
         }
       },

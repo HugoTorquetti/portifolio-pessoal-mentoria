@@ -42,6 +42,19 @@ Swagger:
 Contrato OpenAPI:
 - `http://localhost:3000/api-docs.json`
 
+## Autenticação
+
+O login retorna um JWT assinado. Para acessar rotas protegidas, envie:
+
+```text
+Authorization: Bearer <token>
+```
+
+Variáveis de ambiente opcionais:
+
+- `JWT_SECRET`: chave usada para assinar e validar o token
+- `JWT_EXPIRES_IN`: tempo de expiração do token, com padrão `1h`
+
 ## Testes
 
 Executar testes unitários, API e smoke:
