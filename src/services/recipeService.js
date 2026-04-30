@@ -298,7 +298,13 @@ function patchRecipe(user, recipeId, recipePayload) {
   const partialPayload = pickRecipeFields(recipePayload);
 
   if (Object.keys(partialPayload).length === 0) {
-    return { status: 400, body: { message: 'Informe ao menos um campo válido da receita para atualizar.' } };
+    return {
+      status: 400,
+      body: {
+        message: 'Informe ao menos um campo válido da receita para atualizar.',
+        allowedFields: UPDATABLE_RECIPE_FIELDS
+      }
+    };
   }
 
   const database = readDatabase();

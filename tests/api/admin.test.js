@@ -86,6 +86,19 @@ describe('API - Administracao de receitas', () => {
     expect(response.body.recipe.summary).to.equal(beforeResponse.body.recipe.summary);
   });
 
+  it('permite admin atualizar somente o titulo da receita com PATCH', async () => {
+    const token = await login('admin@receitasdavo.com', 'admin123');
+    const response = await request(app)
+      .patch('/api/recipes/1')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Bolo de Fuba com Titulo Corrigido' });
+
+    expect(response.status).to.equal(200);
+    expect(response.body.recipe.title).to.equal('Bolo de Fuba com Titulo Corrigido');
+    expect(response.body.recipe.category).to.equal('Bolos');
+    expect(response.body.recipe.steps).to.have.length.greaterThan(0);
+  });
+
   it('bloqueia PATCH sem campos validos de receita', async () => {
     const token = await login('admin@receitasdavo.com', 'admin123');
     const response = await request(app)
@@ -95,6 +108,7 @@ describe('API - Administracao de receitas', () => {
 
     expect(response.status).to.equal(400);
     expect(response.body.message).to.equal('Informe ao menos um campo válido da receita para atualizar.');
+    expect(response.body.allowedFields).to.include('title');
   });
 
   it('permite admin excluir receita com soft delete', async () => {
