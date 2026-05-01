@@ -1,8 +1,27 @@
+const jwt = require('jsonwebtoken');
 const { readDatabase, writeDatabase } = require('../data/db');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'receitas-da-vo-dev-secret';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 function sanitizeUser(user) {
   const { password, ...safeUser } = user;
   return safeUser;
+}
+
+function generateToken(user) {
+  return jwt.sign(
+    {
+      name: user.name,
+      email: user.email,
+      role: user.role
+    },
+    JWT_SECRET,
+    {
+      subject: String(user.id),
+      expiresIn: JWT_EXPIRES_IN
+    }
+  );
 }
 
 function isValidEmail(email) {
@@ -54,9 +73,7 @@ function loginUser({ email, password }) {
     return { status: 401, body: { message: 'Credenciais inválidas.' } };
   }
 
-  const token = `token-${user.id}-${Date.now()}`;
-  database.sessions.push({ token, userId: user.id });
-  writeDatabase(database);
+  const token = generateToken(user);
 
   return { status: 200, body: { token, user: sanitizeUser(user) } };
 }
@@ -67,17 +84,19 @@ function getAuthenticatedUser(authorizationHeader) {
   }
 
   const token = authorizationHeader.replace('Bearer ', '');
-  const database = readDatabase();
-  const session = database.sessions.find((item) => item.token === token);
 
-  if (!session) {
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    const database = readDatabase();
+
+    return database.users.find((user) => user.id === Number(payload.sub)) || null;
+  } catch (_error) {
     return null;
   }
-
-  return database.users.find((user) => user.id === session.userId) || null;
 }
 
 module.exports = {
+  generateToken,
   getAuthenticatedUser,
   isValidEmail,
   loginUser,

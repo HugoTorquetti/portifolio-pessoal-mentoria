@@ -16,6 +16,23 @@ function canManageComment(user, comment) {
   return user.role === 'admin' || comment.userId === user.id;
 }
 
+const REQUIRED_RECIPE_FIELDS = ['title', 'category', 'summary', 'successChecklist', 'steps', 'expertTip'];
+const UPDATABLE_RECIPE_FIELDS = REQUIRED_RECIPE_FIELDS;
+
+function pickRecipeFields(recipePayload) {
+  return UPDATABLE_RECIPE_FIELDS.reduce((payload, field) => {
+    if (Object.prototype.hasOwnProperty.call(recipePayload, field)) {
+      payload[field] = recipePayload[field];
+    }
+
+    return payload;
+  }, {});
+}
+
+function hasMissingRequiredRecipeField(recipePayload) {
+  return REQUIRED_RECIPE_FIELDS.some((field) => !recipePayload[field]);
+}
+
 function getRecipePreview(recipe) {
   return {
     id: recipe.id,
@@ -224,10 +241,7 @@ function createRecipe(user, recipePayload) {
     return { status: 403, body: { message: 'Somente admin pode publicar receitas.' } };
   }
 
-  const requiredFields = ['title', 'category', 'summary', 'successChecklist', 'steps', 'expertTip'];
-  const hasMissingField = requiredFields.some((field) => !recipePayload[field]);
-
-  if (hasMissingField) {
+  if (hasMissingRequiredRecipeField(recipePayload)) {
     return { status: 400, body: { message: 'Todos os campos obrigatórios da receita devem ser informados.' } };
   }
 
@@ -251,6 +265,10 @@ function updateRecipe(user, recipeId, recipePayload) {
     return { status: 403, body: { message: 'Somente admin pode editar receitas.' } };
   }
 
+  if (hasMissingRequiredRecipeField(recipePayload)) {
+    return { status: 400, body: { message: 'Todos os campos obrigatórios da receita devem ser informados.' } };
+  }
+
   const database = readDatabase();
   const recipeIndex = database.recipes.findIndex(
     (item) => item.id === Number(recipeId) && isActiveRecipe(item)
@@ -263,6 +281,44 @@ function updateRecipe(user, recipeId, recipePayload) {
   database.recipes[recipeIndex] = {
     ...database.recipes[recipeIndex],
     ...recipePayload,
+    id: database.recipes[recipeIndex].id,
+    deletedAt: database.recipes[recipeIndex].deletedAt
+  };
+
+  writeDatabase(database);
+
+  return { status: 200, body: { recipe: database.recipes[recipeIndex] } };
+}
+
+function patchRecipe(user, recipeId, recipePayload) {
+  if (user.role !== 'admin') {
+    return { status: 403, body: { message: 'Somente admin pode editar receitas.' } };
+  }
+
+  const partialPayload = pickRecipeFields(recipePayload);
+
+  if (Object.keys(partialPayload).length === 0) {
+    return {
+      status: 400,
+      body: {
+        message: 'Informe ao menos um campo válido da receita para atualizar.',
+        allowedFields: UPDATABLE_RECIPE_FIELDS
+      }
+    };
+  }
+
+  const database = readDatabase();
+  const recipeIndex = database.recipes.findIndex(
+    (item) => item.id === Number(recipeId) && isActiveRecipe(item)
+  );
+
+  if (recipeIndex === -1) {
+    return { status: 404, body: { message: 'Receita não encontrada.' } };
+  }
+
+  database.recipes[recipeIndex] = {
+    ...database.recipes[recipeIndex],
+    ...partialPayload,
     id: database.recipes[recipeIndex].id,
     deletedAt: database.recipes[recipeIndex].deletedAt
   };
@@ -312,6 +368,7 @@ module.exports = {
   isActiveRecipe,
   listFavorites,
   listRecipes,
+  patchRecipe,
   removeFavoriteRecipe,
   softDeleteRecipe,
   updateComment,

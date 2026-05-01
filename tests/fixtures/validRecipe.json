@@ -1,0 +1,13 @@
+{
+  "title": "Arroz Doce de Festa",
+  "category": "Doces",
+  "summary": "Receita servida nas festas de familia.",
+  "successChecklist": [
+    "Mexer sempre para nao grudar."
+  ],
+  "steps": [
+    "Cozinhar o arroz.",
+    "Adicionar leite e acucar."
+  ],
+  "expertTip": "Canela entra so no final para perfumar."
+}
