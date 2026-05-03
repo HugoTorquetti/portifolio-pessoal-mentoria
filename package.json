@@ -8,7 +8,7 @@
     "dev": "node --watch src/server.js",
     "test": "npm run test:unit && npm run test:api && npm run test:smoke",
     "test:unit": "mocha \"tests/unit/**/*.test.js\" --exit",
-    "test:api": "mocha \"tests/api/**/*.test.js\" --exit",
+    "test:api": "mocha \"tests/api/**/*.test.js\" --reporter mochawesome --reporter-options reportDir=mochawesome-report/api,reportFilename=api-tests,quiet=true,overwrite=true,html=true,json=true --exit",
     "test:smoke": "mocha \"tests/smoke/**/*.test.js\" --exit"
   },
   "keywords": [
@@ -28,6 +28,7 @@
   "devDependencies": {
     "chai": "^4.5.0",
     "mocha": "^10.8.2",
+    "mochawesome": "^7.1.4",
     "supertest": "^7.0.0"
   }
 }

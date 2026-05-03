@@ -69,6 +69,14 @@ Executar apenas testes de API:
 npm run test:api
 ```
 
+Ao executar os testes de API, o Mochawesome gera relatório HTML e JSON em:
+
+```text
+mochawesome-report/api
+```
+
+No GitHub Actions, esse relatório é publicado como artifact com o nome `api-mochawesome-report`.
+
 ## Credenciais Iniciais
 
 Admin:
